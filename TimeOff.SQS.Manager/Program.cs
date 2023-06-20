@@ -13,7 +13,7 @@ string requestsQueueUrl = (await client.GetQueueUrlAsync(requestsQueueName)).Que
 string resultsQueueName = Constants.LeaveApplicationsResultsQueueName;
 string resultsQueueUrl = (await client.GetQueueUrlAsync(resultsQueueName)).QueueUrl;
 
-Console.WriteLine("Manager consumer started.");
+Console.WriteLine("Manager consumer and producer started.");
 Console.WriteLine("Waiting for leave application requests...");
 Console.WriteLine("");
 
@@ -38,7 +38,7 @@ while (true)
 
     if (response.Messages.Count > 0)
     {
-        var tasks = response.Messages.ToList().Select(m => ProcessRequest(m));
+        var tasks = response.Messages.ToList().Select(ProcessRequest);
 
         await Task.WhenAll(tasks);
     }
